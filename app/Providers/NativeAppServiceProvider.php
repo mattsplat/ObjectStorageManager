@@ -18,9 +18,9 @@ class NativeAppServiceProvider
     {
         Menu::new()
             ->appMenu()
+            ->editMenu()
             ->submenu('About', Menu::new()
-                ->link('https://beyondco.de', 'Beyond Code')
-                ->link('https://simonhamp.me', 'Simon Hamp')
+                ->link('https://beyondco.de', 'Ball deep')
             )
             ->submenu('View', Menu::new()
                 ->toggleFullscreen()
