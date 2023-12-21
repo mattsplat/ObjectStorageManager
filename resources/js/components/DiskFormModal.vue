@@ -10,7 +10,7 @@
                         <form>
                             <div class="space-y-12">
                                 <div class="border-b border-gray-900/10 pb-12">
-                                    <h2 class="text-base font-semibold leading-7 text-gray-900">{{props.disk.id ? 'Update ': 'Save '}} Disk</h2>
+                                    <h2 class="text-base font-semibold leading-7 text-gray-900">{{props.disk?.id ? 'Update ': 'Save '}} Disk</h2>
                                     <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                                         <div class="sm:col-span-6">
                                             <label for="name" class="block text-sm font-medium leading-6 text-gray-900">Name</label>
@@ -150,7 +150,7 @@ import {ref, defineEmits} from 'vue'
 const props = defineProps({
     disk: {
         type: Object,
-        default: ''
+        default: null
     }
 })
 
@@ -160,29 +160,28 @@ const path = ref('')
 const emit = defineEmits(['update', 'close'])
 
 const disk = ref({
-    driver: props.disk.driver ?? "s3",
-    name: props.disk.name ?? "",
-    key: props.disk.key ?? "",
-    secret:  props.disk.secret ?? "",
-    region: props.disk.region ?? "",
-    bucket: props.disk.bucket ?? "",
-    folder: props.disk.folder ?? "",
-    cdn_endpoint: props.disk.cdn_endpoint ?? "",
-    url: props.disk.url ?? "",
-    endpoint: props.disk.endpoint ?? "",
-    use_path_style_endpoint: props.disk.use_path_style_endpoint ?? "",
+    driver: props.disk?.driver ?? "s3",
+    name: props.disk?.name ?? "",
+    key: props.disk?.key ?? "",
+    secret:  props.disk?.secret ?? "",
+    region: props.disk?.region ?? "",
+    bucket: props.disk?.bucket ?? "",
+    folder: props.disk?.folder ?? "",
+    cdn_endpoint: props.disk?.cdn_endpoint ?? "",
+    url: props.disk?.url ?? "",
+    endpoint: props.disk?.endpoint ?? "",
+    use_path_style_endpoint: props.disk?.use_path_style_endpoint ?? "",
 })
 
 const saveDisk = () => {
     let method = 'post'
     let url = '/api/disk'
-    if (props.disk) {
+    if (props.disk && props.disk?.id) {
         method = 'put'
         url = '/api/disk/' + props.disk.id
     }
-    axios('/api/disk', {
+    axios(url, {
         method: method,
-        url: url,
         data: disk.value
     } ).then(response => {
         console.log(response.data)

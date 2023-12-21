@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Disk;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,12 +20,12 @@ Route::post('/ajax/native/clipboard', [\App\Http\Controllers\NativeController::c
 
 // disk
 Route::get('disk/{disk}', [\App\Http\Controllers\DiskController::class, 'show'])->name('api.disk.show');
-//Route::get('disk/{disk}/folder', [\App\Http\Controllers\FolderController::class, 'index'])->name('api.disk.folder.index');
 
 // api
 Route::get('api/disk/{disk}/folder/', [\App\Http\Controllers\Api\FolderController::class, 'show'])->name('api.disk.folder.show');
 Route::get('api/disk', [\App\Http\Controllers\Api\DiskController::class, 'index'])->name('api.disk.index');
 Route::post('api/disk', [\App\Http\Controllers\Api\DiskController::class, 'store'])->name('api.disk.store');
+Route::put('api/disk/{disk}', [\App\Http\Controllers\Api\DiskController::class, 'update'])->name('api.disk.update');
 Route::get('api/disk/{disk}', [\App\Http\Controllers\Api\DiskController::class, 'show'])->name('api.disk.show');
 Route::delete('api/disk/{disk}', [\App\Http\Controllers\Api\DiskController::class, 'destroy'])->name('api.disk.destroy');
 

@@ -47,7 +47,6 @@
                         </a>
                     </div>
                 </li>
-
             </ol>
         </nav>
 
@@ -67,18 +66,15 @@
         <section class="">
             <div class="py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6" v-if="files.length > 0">
                 <div class="space-y-8 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-12 md:space-y-0">
-                    <div v-for="file in files">
-                        <div
-                            class="flex justify-center items-center mb-4 w-100 rounded-full bg-primary-100 dark:bg-primary-900">
-                            <img :src="file.url" class="rounded">
-                        </div>
-                        <h3 class="mb-2 text-xl font-bold dark:text-white">{{ file.path.split('/').pop() }}</h3>
+                    <div v-for="file in visibleFiles" class="group relative border-gray-200">
+                        <ImageCard :image="file"></ImageCard>
                         <p class="text-gray-500 dark:text-gray-400">
                             {{ (file.file_size / 1024).toFixed(2) }} KB
                         </p>
-
                     </div>
                 </div>
+                <h3 @click="loadMore" class="text-center text-blue-300 mt-5 cursor-pointer"
+                    v-if="totalResults-(page * perPage) > 0">Showing {{ perPage * page }} of {{ totalResults }} Load More</h3>
             </div>
             <div v-else class="p-12 mt-8 mx-auto text-center">
                 <span class="text-2xl text-center text-white">No files found.</span>
@@ -89,6 +85,7 @@
 
 <script setup>
 import {ref, onMounted, computed} from 'vue'
+import ImageCard from "../components/ImageCard.vue";
 
 const folder = ref('')
 const file = ref('')
@@ -153,6 +150,17 @@ const breadCrumbs = computed(() => {
     return crumbs
 })
 const error = ref(null)
+const page = ref(1)
+const perPage = ref(10)
+const visibleFiles = computed(() => {
+    return files.value.slice(0, page.value * perPage.value)
+})
+const totalResults = computed(() => {
+    return files.value.length
+})
+const loadMore = () => {
+    page.value++
+}
 
 onMounted(() => {
     getPathContents()
