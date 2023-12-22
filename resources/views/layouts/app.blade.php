@@ -6,7 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="base_url" content="{{ url('/') }}">
 
-    <title>Logger App</title>
+    <title>{{config('app.name')}}</title>
     @stack('scripts')
     @vite([ 'resources/js/app.js', 'resources/css/app.css'])
 </head>
