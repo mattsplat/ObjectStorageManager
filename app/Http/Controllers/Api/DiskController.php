@@ -51,12 +51,15 @@ class DiskController extends Controller
 
         return $results->map(function (StorageAttributes $attributes) use ($storage) {
             $data = $attributes->jsonSerialize();
-            if ($attributes->isFile() && $storage->getVisibility($attributes->path()) === 'public') {
+
+            if ($attributes->isFile()) {
+                // it takes a long time to get the visibility of each file so we don't do it and if the url fails we assume it's private
                 $data['url'] = $storage->url($attributes->path());
             }
 
             return $data;
-        });
+        })
+            ->filter(fn($item) => !str_ends_with($item['path'], '.DS_Store'));
     }
 
 

@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden min-h-[600px]">
+    <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden min-h-[600px]" >
 
 
         <div class="absolute bg-white bg-opacity-60 z-10 h-full w-full flex items-center justify-center" v-if="isLoading">
@@ -67,7 +67,7 @@
             <div class="py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6" v-if="files.length > 0">
                 <div class="space-y-8 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-12 md:space-y-0">
                     <div v-for="file in visibleFiles" class="group relative border-gray-200">
-                        <ImageCard :image="file"></ImageCard>
+                        <ImageCard :image="file" @selected="selectedFile = file"></ImageCard>
                         <p class="text-gray-500 dark:text-gray-400">
                             {{ (file.file_size / 1024).toFixed(2) }} KB
                         </p>
@@ -80,17 +80,20 @@
                 <span class="text-2xl text-center text-white">No files found.</span>
             </div>
         </section>
+        <FileDrawerSlide v-if="selectedFile" @close="selectedFile = null" :file="selectedFile" :disk="disk" @update="getPathContents"></FileDrawerSlide>
     </div>
 </template>
 
 <script setup>
 import {ref, onMounted, computed} from 'vue'
 import ImageCard from "../components/ImageCard.vue";
+import FileDrawerSlide from "../components/FileDrawerSlide.vue";
 
 const folder = ref('')
 const file = ref('')
 const clipboard = ref('')
 const clipboardField = ref(null)
+const selectedFile = ref(null)
 
 const props = defineProps({
     disk: {
@@ -111,13 +114,14 @@ if (pathParam) {
 const isLoading = ref(false)
 const getPathContents = () => {
     isLoading.value = true
+    page.value = 1
     axios.get('/api/disk/' + props.disk.id, {
         params: {
             path: path.value,
         }
     }).then(response => {
-        folders.value = response.data.filter(row => row.type === 'dir')
-        files.value = response.data.filter(row => row.type === 'file')
+        folders.value = response.data?.filter(row => row.type === 'dir')
+        files.value = response.data?.filter(row => row.type === 'file')
         isLoading.value = false
     }).catch(e => {
         error.value = e

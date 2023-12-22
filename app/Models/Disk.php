@@ -34,4 +34,27 @@ class Disk extends Model
 
         return Storage::build($data);
     }
+
+    public function getFileMetadata($path)
+    {
+        $storage = $this->storage;
+
+        $file = $storage->getClient()
+            ->headObject([
+                'Bucket' => $this->bucket,
+                'Key' => $path,
+            ])
+            ->toArray();
+        $file['visibility'] = $storage->getVisibility($path);
+        if ($file['visibility'] === 'public') {
+            $file['url'] = $storage->url($path);
+        } else {
+            $file['url'] = $storage->temporaryUrl(
+                $path, now()->addMinutes(5)
+            );
+        }
+        $file['mime_type'] = $file['ContentType'] ?? $storage->mimeType($path);
+
+        return $file;
+    }
 }

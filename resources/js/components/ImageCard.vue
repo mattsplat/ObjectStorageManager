@@ -1,13 +1,31 @@
 <template>
-    <div v-if="isImage"
+    <div v-if="isImage"  @click="select"
         class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80 border-dashed border-2 border-sky-500">
-        <img :src="image.url" alt="Asset Image." @click="select"
-             class="h-full mx-auto object-cover object-center bg-gray-700 dark:bg-gray-300" :id="`image-${image.url}`" @load="getDimensions">
+        <template v-if="image.url && !showLocked">
+            <img :src="image.url" alt="Asset Image." style="height: -webkit-fill-available;"
+                 class="h-full mx-auto  bg-gray-700 dark:bg-gray-300" :id="`image-${image.url}`"
+                 @load="; imageLoading = false; getDimensions()"
+                 @error="showLocked = true"
+            >
+            <div class="" v-if="imageLoading">
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class='flex space-x-2 justify-center items-center'>
+                        <span class='sr-only'>Loading...</span>
+                        <div class='h-8 w-8 bg-gray-600 rounded-full animate-bounce [animation-delay:-0.3s]'></div>
+                        <div class='h-8 w-8 bg-gray-600 rounded-full animate-bounce [animation-delay:-0.15s]'></div>
+                        <div class='h-8 w-8 bg-gray-600 rounded-full animate-bounce'></div>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+
+        <div v-else class="aspect-h-1">
+            <LockClosedIcon></LockClosedIcon>
+        </div>
     </div>
-    <div v-else class="aspect-h-1">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" class="fill-slate-700 dark:fill-slate-200 ">
-            <path d="M0 64C0 28.7 28.7 0 64 0H224V128c0 17.7 14.3 32 32 32H384V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V64zm384 64H256V0L384 128z"/>
-        </svg>
+    <div v-else class="aspect-h-1"  @click="select">
+        <DocumentIcon class="dark:fill-white"></DocumentIcon>
     </div>
     <div class="mt-4 flex justify-between">
         <div>
@@ -21,6 +39,7 @@
 
 <script setup>
 import {computed, defineProps, inject, ref} from 'vue'
+import {LockClosedIcon, DocumentIcon} from "@heroicons/vue/24/outline/index.js";
 
 const emit = defineEmits(['selected'])
 const props = defineProps({
@@ -38,6 +57,7 @@ const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'svg']
 const isImage = computed(() => {
     return imageExtensions.includes(fileExtension.value)
 })
+const imageLoading = ref(true)
 
 const dimensions = ref({})
 const getDimensions = () => {
@@ -52,4 +72,5 @@ const getDimensions = () => {
 const select = () => {
     emit('selected')
 }
+const showLocked = ref(false)
 </script>

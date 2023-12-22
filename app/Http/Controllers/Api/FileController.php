@@ -4,32 +4,19 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Disk;
+use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class FileController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //
+        // todo save file
     }
 
     /**
@@ -37,36 +24,56 @@ class FileController extends Controller
      */
     public function show(Disk $disk, Request $request)
     {
-        $storage = $disk->storage;
 
         $path = $request->path ?? '';
-
-        $file = $storage->file($path);
+        $file = $disk->getFileMetadata($path);
 
         return $file;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+
+    public function download(Disk $disk, Request $request)
     {
-        //
+        $path = $request->path;
+        $fileParts = explode('/', $path);
+        $fileName = end($fileParts);
+        if (!$path) {
+            return response()->error('Path is required');
+        }
+
+        $file = $disk->storage->get($path);
+        // todo get downloads directory
+        Storage::disk('local')->put($fileName, $file);
+
+        return response()->json([
+            'path' => app()->storagePath(),
+        ]);
     }
+
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
     {
-        //
+        // todo update visibility
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Disk $disk, Request $request)
     {
-        //
+        $path = $request->path;
+        if (!$path || !$disk->storage->exists($path)) {
+            return response()->error('Path is required');
+        }
+
+        $disk->storage->delete($path);
+
+        return response()->json([
+            'message' => 'File deleted successfully',
+        ]);
     }
+
 }
