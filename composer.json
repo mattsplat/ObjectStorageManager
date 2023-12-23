@@ -10,8 +10,9 @@
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8",
-        "league/flysystem-aws-s3-v3": "^3.0",
-        "nativephp/electron": "^0.3.2"
+        "league/flysystem-aws-s3-v3": "^3.22",
+        "nativephp/electron": "^0.4.0",
+        "nativephp/laravel": "^0.4.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
