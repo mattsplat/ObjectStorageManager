@@ -42,11 +42,16 @@ class FileController extends Controller
         }
 
         $file = $disk->storage->get($path);
-        // todo get downloads directory
-        Storage::disk('local')->put($fileName, $file);
+        $client = new \Native\Laravel\Client\Client();
+        $downloadsPath = $client->get('app/path/downloads')->json('path');
+        if(empty($downloadsPath)) {
+            return response()->error('Downloads path not found');
+        }
+        $fullPath = $downloadsPath . '/' . $fileName;
+        file_put_contents($fullPath, $file);
 
         return response()->json([
-            'path' => app()->storagePath(),
+            'path' => $fullPath,
         ]);
     }
 
