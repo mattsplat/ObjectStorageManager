@@ -63,7 +63,9 @@
 <script setup>
 import {onMounted, ref} from "vue";
 import DiskFormModal from "./DiskFormModal.vue";
+import {useToast} from "vue-toastification";
 
+const toast = useToast();
 const disks = ref([]);
 const showDiskFormModal = ref(false);
 
@@ -77,6 +79,7 @@ const getDisks = () => {
             disks.value = response.data;
         })
         .catch(error => {
+            toast.error('Something went wrong');
             console.log(error);
         });
 }
@@ -84,9 +87,11 @@ const getDisks = () => {
 const deleteDisk = (id) => {
     axios.delete(`/api/disk/${id}`)
         .then(_ => {
+            toast.success('Disk deleted successfully');
             getDisks();
         })
         .catch(error => {
+            toast.error('Something went wrong');
             console.log(error);
         });
 }

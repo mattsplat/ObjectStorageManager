@@ -1,7 +1,5 @@
 <template>
     <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden min-h-[600px]" >
-
-
         <div class="absolute bg-white bg-opacity-60 z-10 h-full w-full flex items-center justify-center" v-if="isLoading">
             <div class="flex items-center">
                 <span class="text-3xl mr-4">Loading</span>
@@ -88,6 +86,7 @@
 import {ref, onMounted, computed} from 'vue'
 import ImageCard from "../components/ImageCard.vue";
 import FileDrawerSlide from "../components/FileDrawerSlide.vue";
+import Toast from "../components/Toast.vue";
 
 const folder = ref('')
 const file = ref('')

@@ -23,22 +23,6 @@ class DiskController extends Controller
      */
     public function show(Disk $disk, Request $request)
     {
-//        $storage = $disk->storage;
-//
-//        $path = $request->path ?? '';
-//
-//        return $storage->listContents($path, false)
-//            ->map(function (StorageAttributes $attributes) use ($storage) {
-//                $data = $attributes->jsonSerialize();
-//                if ($attributes->isFile()) {
-//                    $data['url'] = $storage->url($attributes->path());
-//                }
-//
-//                return $data;
-//            })
-//            ->toArray();
-
-
         return view('disk', compact('disk'));
     }
 

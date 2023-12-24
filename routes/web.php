@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,3 +32,21 @@ Route::delete('api/disk/{disk}', [\App\Http\Controllers\Api\DiskController::clas
 Route::get('api/disk/{disk}/file', [\App\Http\Controllers\Api\FileController::class, 'show'])->name('api.disk.file.show');
 Route::get('api/disk/{disk}/file/download', [\App\Http\Controllers\Api\FileController::class, 'download'])->name('api.disk.file.download');
 Route::delete('api/disk/{disk}/file', [\App\Http\Controllers\Api\FileController::class, 'destroy'])->name('api.disk.file.destroy');
+
+
+
+Route::get('api/config', function () {
+//    app/recent-documents
+    $client = Http::asJson()
+        ->baseUrl(config('nativephp-internal.api_url', ''))
+        ->timeout(60 * 60)
+        ->withHeaders([
+            'X-NativePHP-Secret' => config('nativephp-internal.secret'),
+        ])
+        ->asJson();
+    return $client->get('app/path/downloads')['path'];
+
+
+//    return app()->make('config')->all();
+
+})->name('api.config');

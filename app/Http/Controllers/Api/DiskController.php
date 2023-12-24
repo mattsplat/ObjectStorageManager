@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Disk;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use League\Flysystem\StorageAttributes;
 
 class DiskController extends Controller
@@ -23,7 +24,7 @@ class DiskController extends Controller
      */
     public function store(Request $request)
     {
-        $disk = \App\Models\Disk::create([
+        $disk = (new \App\Models\Disk())->fill([
             'name' => $request->name,
             'key' => $request->key,
             'secret' => $request->secret,
@@ -34,6 +35,14 @@ class DiskController extends Controller
             'endpoint' => $request->endpoint,
             'use_path_style_endpoint' => $request->use_path_style_endpoint ?? false,
         ]);
+
+        // test connection
+        try {
+            $disk->storage->directories();
+        } catch (\Exception $e) {
+            return response()->json("Connection failed " . $e->getMessage(), 400);
+        }
+        $disk->save();
 
         return $disk;
     }
@@ -68,7 +77,7 @@ class DiskController extends Controller
      */
     public function update(Request $request, Disk $disk)
     {
-        $disk->update(
+        $disk->fill(
             $request->only([
                 'name',
                 'key',
@@ -81,6 +90,14 @@ class DiskController extends Controller
                 'use_path_style_endpoint',
             ])
         );
+
+        // test connection
+        try {
+            $disk->storage->directories('');
+        } catch (\Exception $e) {
+            return response()->json("Connection failed " . $e->getMessage(), 400);
+        }
+        $disk->save();
 
         return $disk;
     }

@@ -32,9 +32,7 @@
                                 <div class="h-full overflow-y-auto bg-white p-8">
                                     <div class="space-y-6 pb-16">
                                         <div>
-                                            <div
-                                                class="aspect-h-7 aspect-w-10 block w-full overflow-hidden rounded-lg bg-gray-200 rounded-md"
-                                            >
+                                            <div class="aspect-h-7 aspect-w-10 block w-full overflow-hidden rounded-lg bg-gray-200 rounded-md" >
                                                 <img
                                                     v-if="isImage"
                                                     :src="publicUrl"
@@ -114,8 +112,9 @@
 import {computed, onMounted, ref} from 'vue'
 import {Dialog, DialogPanel, TransitionChild, TransitionRoot} from '@headlessui/vue'
 import {HeartIcon, XMarkIcon, DocumentIcon} from '@heroicons/vue/24/outline'
-import {PencilIcon, PlusIcon} from '@heroicons/vue/20/solid'
+import { useToast } from "vue-toastification";
 
+const toast = useToast();
 const emit = defineEmits(['close', 'update'])
 const close = () => {
     emit('close')
@@ -189,8 +188,11 @@ const downloadFile = () => {
         }
     }).then(response => {
         console.log(response.data)
+        const {path} = response.data
+        toast.success('File downloaded successfully. To ' + path)
     }).catch(e => {
         console.log(e)
+        toast.error('There was an error downloading the file.')
     })
 }
 const deleteFile = () => {
@@ -203,10 +205,13 @@ const deleteFile = () => {
         }
     }).then(response => {
         console.log(response.data)
+
+        toast.success('File deleted successfully.')
         emit('update')
         close()
     }).catch(e => {
         console.log(e)
+        toast.error('There was an error deleting the file.')
     })
 }
 </script>

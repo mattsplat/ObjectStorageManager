@@ -146,7 +146,10 @@
 
 <script setup>
 import {ref, defineEmits} from 'vue'
+import {useToast} from "vue-toastification";
 
+
+const toast = useToast();
 const props = defineProps({
     disk: {
         type: Object,
@@ -185,9 +188,11 @@ const saveDisk = () => {
         data: disk.value
     } ).then(response => {
         console.log(response.data)
+        toast.success('Disk saved successfully')
         emit('update', response.data)
         close()
     }).catch(error => {
+        toast.error('Something went wrong ' + error.response.data)
         console.log(error)
     })
 }
