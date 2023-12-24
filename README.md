@@ -1,7 +1,12 @@
-# NativePHP Starter App
-## Built using Vue and TailwindCSS.
+# Object Storage Manager
 
-Still a work in progress.
+## Images
+
+![dashboard](./public/images/dashboard.png)
+
+![images-list](./public/images/images-list.png)
+
+![download](./public/images/download.png)
 
 ## Development Installation
 1. Clone the repo
@@ -11,4 +16,6 @@ Still a work in progress.
 5. Run `npm run dev`
 6. Run `php artisan key:generate`
 7. Run `php artisan native:serve`
+
+
 
