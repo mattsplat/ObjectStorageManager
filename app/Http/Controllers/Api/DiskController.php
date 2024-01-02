@@ -68,7 +68,7 @@ class DiskController extends Controller
 
             return $data;
         })
-            ->filter(fn($item) => !str_ends_with($item['path'], '.DS_Store'));
+            ->filter(fn($item) => !str_ends_with($item['path'], '.DS_Store'))->values();
     }
 
 
