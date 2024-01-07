@@ -19,14 +19,6 @@ class NativeAppServiceProvider
         Menu::new()
             ->appMenu()
             ->editMenu()
-            ->submenu('About', Menu::new()
-                ->link('https://beyondco.de', 'Ball deep')
-            )
-            ->submenu('View', Menu::new()
-                ->toggleFullscreen()
-                ->separator()
-                ->link('https://laravel.com', 'Learn More', 'CmdOrCtrl+L')
-            )
             ->register();
 
         Window::open()
