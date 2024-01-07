@@ -10,7 +10,8 @@
                         <form>
                             <div class="space-y-12">
                                 <div class="border-b border-gray-900/10 pb-12">
-                                    <h2 class="text-base font-semibold leading-7 text-gray-900">{{props.disk?.id ? 'Update ': 'Save '}} Disk</h2>
+                                    <h2 class="text-base font-semibold leading-7 text-gray-900">
+                                        {{ props.disk?.id ? 'Update ' : 'Save ' }} Disk</h2>
                                     <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                                         <div class="sm:col-span-6">
                                             <label for="name" class="block text-sm font-medium leading-6 text-gray-900">Name</label>
@@ -19,7 +20,7 @@
                                                     class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                                                     <input v-model="disk.name" type="text" name="name" id="name"
                                                            class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                                           placeholder="New Laravel Disk">
+                                                           placeholder="Name of Disk">
                                                 </div>
                                             </div>
                                         </div>
@@ -31,7 +32,7 @@
                                                     class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                                                     <input v-model="disk.key" type="text" name="key" id="key"
                                                            class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                                           placeholder="New Laravel Disk">
+                                                           placeholder="Key">
                                                 </div>
                                             </div>
                                         </div>
@@ -43,7 +44,15 @@
                                                     class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                                                     <input v-model="disk.secret" type="text" name="secret" id="secret"
                                                            class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                                           placeholder="New Laravel Disk">
+                                                           placeholder="Secret Key">
+                                                    <div class="control">
+                                                        <button class="button" @click="toggleShow"><span
+                                                            class="icon is-small is-right">
+                                                            <i class="fas"
+                                                               :class="{ 'fa-eye-slash': showPassword, 'fa-eye': !showPassword }"></i>
+                                                          </span>
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -54,9 +63,10 @@
                                             <div class="mt-2">
                                                 <div
                                                     class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                                                    <input v-model="disk.region" type="text" name="region" id="region"
+                                                    <input v-model="disk.region" type="text" name="region"
+                                                           id="region"
                                                            class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                                           placeholder="New Laravel Disk">
+                                                           placeholder="us-east-2">
                                                 </div>
                                             </div>
                                         </div>
@@ -67,25 +77,14 @@
                                             <div class="mt-2">
                                                 <div
                                                     class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                                                    <input v-model="disk.bucket" type="text" name="bucket" id="bucket"
+                                                    <input v-model="disk.bucket" type="text" name="bucket"
+                                                           id="bucket"
                                                            class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                                           placeholder="New Laravel Disk">
+                                                           placeholder="bucket-thing-name">
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div class="sm:col-span-6">
-                                            <label for="folder"
-                                                   class="block text-sm font-medium leading-6 text-gray-900">Folder</label>
-                                            <div class="mt-2">
-                                                <div
-                                                    class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                                                    <input v-model="disk.folder" type="text" name="folder" id="folder"
-                                                           class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                                           placeholder="New Laravel Disk">
-                                                </div>
-                                            </div>
-                                        </div>
 
                                         <div class="sm:col-span-6">
                                             <label for="url"
@@ -95,7 +94,7 @@
                                                     class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                                                     <input v-model="disk.url" type="text" name="url" id="url"
                                                            class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                                           placeholder="New Laravel Disk">
+                                                           placeholder="">
                                                 </div>
                                             </div>
                                         </div>
@@ -107,17 +106,23 @@
                                             <div class="mt-2">
                                                 <div
                                                     class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                                                    <input v-model="disk.endpoint" type="text" name="endpoint" id="endpoint"
+                                                    <input v-model="disk.endpoint" type="text" name="endpoint"
+                                                           id="endpoint"
                                                            class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                                           placeholder="New Laravel Disk">
+                                                           placeholder="For S3 Compatible Systems">
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="sm:col-span-6">
                                             <div class="flex items-center mb-4">
-                                                <input id="use_path_style_endpoint" type="checkbox" v-model="disk.use_path_style_endpoint" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                                <label for="use_path_style_endpoint" class="ms-2 text-sm font-medium text-gray-900">Use Path Style Endpoint</label>
+                                                <input id="use_path_style_endpoint" type="checkbox"
+                                                       v-model="disk.use_path_style_endpoint"
+                                                       class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                                <label for="use_path_style_endpoint"
+                                                       class="ms-2 text-sm font-medium text-gray-900">
+                                                    Use Path Style Endpoint
+                                                </label>
                                             </div>
                                         </div>
                                     </div>
@@ -166,7 +171,7 @@ const disk = ref({
     driver: props.disk?.driver ?? "s3",
     name: props.disk?.name ?? "",
     key: props.disk?.key ?? "",
-    secret:  props.disk?.secret ?? "",
+    secret: props.disk?.secret ?? "",
     region: props.disk?.region ?? "",
     bucket: props.disk?.bucket ?? "",
     folder: props.disk?.folder ?? "",
@@ -186,7 +191,7 @@ const saveDisk = () => {
     axios(url, {
         method: method,
         data: disk.value
-    } ).then(response => {
+    }).then(response => {
         console.log(response.data)
         toast.success('Disk saved successfully')
         emit('update', response.data)
